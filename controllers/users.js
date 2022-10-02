@@ -1,4 +1,4 @@
-// require('dotenv').config();
+require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
@@ -82,13 +82,13 @@ const login = async (req, res, next) => {
     }
     const token = jwt.sign(
       { _id: user._id },
-      NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+      NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret'
     );
     res.cookie('jwt', token, {
       maxAge: 3600000,
       httpOnly: true,
-      sameSite: 'none',
-      secure: true,
+      // sameSite: 'none',
+      // secure: true,
     });
     return res.send(user.hidePassword());
   } catch (err) {
