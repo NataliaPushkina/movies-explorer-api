@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, BASE_PATH } = process.env;
 
 app.use(requestLogger);
 
@@ -62,6 +62,7 @@ async function main() {
   try {
     await app.listen(PORT);
     console.log(`Сервер запущен на ${PORT} порту`);
+    console.log(BASE_PATH);
   } catch (err) {
     console.log(`Произошла ошибка ${err.name} ${err.message}`);
   }

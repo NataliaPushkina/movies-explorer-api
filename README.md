@@ -1,2 +1,2 @@
 # movies-explorer-api
-backend part
+api.pushkina.nomoredomains.icu
