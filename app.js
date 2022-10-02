@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const { celebrate, Joi, errors } = require('celebrate');
 const { userRoutes } = require('./routes/users');
 const { movieRoutes } = require('./routes/movies');
@@ -16,7 +17,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
+
 const { PORT = 3000, BASE_PATH } = process.env;
+
+app.use(
+  cors({
+    origin: ['pushkina.nomoredomains.icu', 'http://localhost:3001'],
+    credentials: true,
+  }),
+);
 
 app.use(requestLogger);
 
