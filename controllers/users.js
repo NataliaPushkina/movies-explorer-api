@@ -15,13 +15,13 @@ const createUser = async (req, res, next) => {
     const {
       email,
       password,
-      name
+      name,
     } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({
       email,
       password: hashedPassword,
-      name
+      name,
     });
     return res.send(user.hidePassword());
   } catch (err) {
@@ -82,7 +82,7 @@ const login = async (req, res, next) => {
     }
     const token = jwt.sign(
       { _id: user._id },
-      NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret'
+      NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
     );
     res.cookie('jwt', token, {
       maxAge: 3600000,
@@ -109,13 +109,5 @@ module.exports = {
   getUserInfo,
   updateUserProfile,
   login,
-  logout
+  logout,
 };
-
-// # возвращает информацию о пользователе (email и имя)
-// GET /users/me
-
-// # обновляет информацию о пользователе (email и имя)
-// PATCH /users/me
-
-// POST /signout

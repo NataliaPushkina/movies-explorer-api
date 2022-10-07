@@ -7,14 +7,8 @@ const auth = require('../middlewares/auth');
 const {
   getMovies,
   createMovie,
-  deleteMovie
+  deleteMovie,
 } = require('../controllers/movies');
-
-// const joiMovieId = celebrate({
-//   params: Joi.object().keys({
-//     movieId: Joi.string().length(24).hex(),
-//   }),
-// });
 
 movieRoutes.use(auth);
 
@@ -32,7 +26,7 @@ movieRoutes.post('/movies', celebrate({
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
     thumbnail: Joi.string().required().regex(/^(http|https):\/\/(W{3}\.)?[^]+#?$/),
-    movieId: Joi.string().required()
+    movieId: Joi.string().required(),
   }),
 }), createMovie);
 
