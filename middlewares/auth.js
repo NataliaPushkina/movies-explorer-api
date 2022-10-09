@@ -11,7 +11,7 @@ const auth = async (req, res, next) => {
   try {
     payload = await jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
   } catch (err) {
-    return next(new AuthError('Необходима авторизация'));
+    return next(new AuthError({ message: 'Необходима авторизация' }));
   }
   req.user = payload;
   return next();

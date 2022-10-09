@@ -1,14 +1,13 @@
+require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const { celebrate, Joi, errors } = require('celebrate');
+const { errors } = require('celebrate');
 const helmet = require('helmet');
-const { userRoutes } = require('./routes/users');
-const { movieRoutes } = require('./routes/movies');
-const { createUser, login } = require('./controllers/users');
+const { router } = require('./routes/index');
 const handleError = require('./errors/error');
 const NotFoundError = require('./errors/not-found-error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -20,9 +19,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
-app.use(rateLimitMiddleware);
 
-const { PORT = 3000, BASE_PATH, MONGO_PATH } = process.env;
+const {
+  PORT = 3000,
+  BASE_PATH,
+  MONGO_PATH = 'mongodb://localhost:27017/moviesdb',
+} = process.env;
 
 app.use(
   cors({
@@ -32,24 +34,9 @@ app.use(
 );
 
 app.use(requestLogger);
+app.use(rateLimitMiddleware);
 
-app.post('/signup', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-    name: Joi.string().required().min(2).max(30),
-  }),
-}), createUser);
-
-app.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-}), login);
-
-app.use(userRoutes);
-app.use(movieRoutes);
+app.use('/', router);
 
 app.use((req, res, next) => {
   next(new NotFoundError('Страница не найдена'));

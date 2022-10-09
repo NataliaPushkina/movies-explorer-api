@@ -10,6 +10,16 @@ const ConflictError = require('../errors/conflict-error');
 const ServerError = require('../errors/server-error');
 const AuthError = require('../errors/auth-error');
 
+// const {
+//   INCOR_USERDATA_TEXT,
+//   SERVER_ERR_TEXT,
+//   NO_USER_ID_TEXT,
+//   INCOR_USER_ID_TEXT,
+//   FOREIGN_EMAIL_TEXT,
+//   NO_USER_EMAIL_TEXT,
+//   WRONG_DATA_TEXT,
+// } = require('../utils/constants');
+
 const createUser = async (req, res, next) => {
   try {
     const {
@@ -26,10 +36,10 @@ const createUser = async (req, res, next) => {
     return res.send(user.hidePassword());
   } catch (err) {
     if (err.name === 'ValidationError') {
-      return next(new BedReqError({ message: 'Переданы некорректные данные пользователя' }));
+      return next(new BedReqError('Переданы некорректные данные пользователя'));
     }
     if (err.code === 11000) {
-      return next(new ConflictError('Пользователь с указанным email уже существует'));
+      return next(new ConflictError('Указанный email принадлежит другому пользователю'));
     }
     return next(new ServerError('Произошла ошибка на сервере'));
   }
@@ -38,6 +48,7 @@ const createUser = async (req, res, next) => {
 const getUserInfo = async (req, res, next) => {
   try {
     const userId = req.user._id;
+    console.log(userId);
     const user = await User.findById(userId);
     if (!user) {
       return next(new NotFoundError('Передан несуществующий _id пользователя'));
@@ -53,15 +64,21 @@ const getUserInfo = async (req, res, next) => {
 
 const updateUserProfile = async (req, res, next) => {
   try {
-    const id = req.user._id;
+    const userId = req.user._id;
     const { name, email } = req.body;
+    const userInfo = await User.findById(userId);
+    console.log(userInfo);
+    if (email !== userInfo.email) {
+      return next(new ConflictError('Указанный email принадлежит другому пользователю'));
+    }
     const user = await User.findByIdAndUpdate(
-      id,
+      userId,
       { name, email },
       { new: true, runValidators: true },
     );
     return res.send(user);
   } catch (err) {
+    console.log(err);
     if (err.name === 'ValidationError') {
       return next(new BedReqError('Переданы некорректные данные пользователя'));
     }

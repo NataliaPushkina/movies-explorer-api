@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { REG_EXP } = require('../utils/constants');
 
 const movieSchema = new mongoose.Schema({
 
@@ -32,7 +33,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => {
-        const valid = /^(http|https):\/\/(W{3}\.)?[^]+#?$/.test(v);
+        const valid = REG_EXP.test(v);
         return valid;
       },
       message: 'Неправильный формат ссылки',
@@ -44,7 +45,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => {
-        const valid = /^(http|https):\/\/(W{3}\.)?[^]+#?$/.test(v);
+        const valid = REG_EXP.test(v);
         return valid;
       },
       message: 'Неправильный формат ссылки',
@@ -56,7 +57,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => {
-        const valid = /^(http|https):\/\/(W{3}\.)?[^]+#?$/.test(v);
+        const valid = REG_EXP.test(v);
         return valid;
       },
       message: 'Неправильный формат ссылки',
@@ -67,14 +68,10 @@ const movieSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
     required: true,
-    validate: {
-      validator: (v) => /^[a-fA-F0-9]{24}$/.test(v),
-      message: 'Неправильный id пользователя!',
-    },
   },
 
-  movieId : {
-    type: String,
+  movieId: {
+    type: Number,
     required: true,
   },
 
@@ -86,7 +83,7 @@ const movieSchema = new mongoose.Schema({
   nameEN: {
     type: String,
     required: true,
-  }
+  },
 }, { versionKey: false });
 
-module.exports = mongoose.model('card', movieSchema);
+module.exports = mongoose.model('movie', movieSchema);
