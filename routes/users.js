@@ -8,9 +8,6 @@ const {
   updateUserProfile,
   logout,
 } = require('../controllers/users');
-// const auth = require('../middlewares/auth');
-
-// userRoutes.use(auth);
 
 userRoutes.get('/users/me', getUserInfo);
 

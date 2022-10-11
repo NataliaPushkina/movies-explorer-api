@@ -7,14 +7,20 @@ const ServerError = require('../errors/server-error');
 
 const {
   SERVER_ERR_TEXT,
+  NO_MOVIES_TEXT,
+  VALIDAT_ERR_TEXT,
+  NO_MOVIE_ID_TEXT,
+  FOREIGN_MOVIE_TEXT,
+  DEL_MOVIE_TEXT,
+  INCOR_MOVIE_ID_TEXT,
 } = require('../utils/constants');
 
 const getMovies = async (req, res, next) => {
   try {
     const owner = req.user._id;
     const movies = await Movie.find({ owner });
-    if (!movies) {
-      return next(new NotFoundError('Не удалось найти фильмы'));
+    if (movies !== []) {
+      return next(new NotFoundError(NO_MOVIES_TEXT));
     }
     return res.send(movies);
   } catch (err) {
@@ -56,7 +62,7 @@ const createMovie = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     if (err.name === 'ValidationError') {
-      return next(new BedReqError('Ошибка в запросе'));
+      return next(new BedReqError(VALIDAT_ERR_TEXT));
     }
     return next(new ServerError(SERVER_ERR_TEXT));
   }
@@ -67,16 +73,16 @@ const deleteMovie = async (req, res, next) => {
   try {
     const movie = await Movie.findById(_id);
     if (!movie) {
-      return next(new NotFoundError('Передан несуществующий _id фильма'));
+      return next(new NotFoundError(NO_MOVIE_ID_TEXT));
     }
     if (req.user._id !== movie.owner.toString()) {
-      return next(new ForbiddenError('Удаление фильмов других пользователей запрещено'));
+      return next(new ForbiddenError(FOREIGN_MOVIE_TEXT));
     }
     await movie.remove();
-    return res.send({ message: 'Фильм удален из списка сохраненных' });
+    return res.send(DEL_MOVIE_TEXT);
   } catch (err) {
     if (err.kind === 'ObjectId') {
-      return next(new BedReqError('Передан некорректный id фильма'));
+      return next(new BedReqError(INCOR_MOVIE_ID_TEXT));
     }
     return next(new ServerError(SERVER_ERR_TEXT));
   }

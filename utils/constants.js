@@ -8,6 +8,13 @@ const INCOR_USER_ID_TEXT = 'Передан некорректный _id поль
 const FOREIGN_EMAIL_TEXT = 'Указанный email принадлежит другому пользователю';
 const NO_USER_EMAIL_TEXT = 'Пользователь c указанным email не найден';
 const WRONG_DATA_TEXT = 'Неправильные почта или пароль';
+const VALIDAT_ERR_TEXT = 'Ошибка в запросе';
+const NO_MOVIE_ID_TEXT = 'Передан несуществующий _id фильма';
+const FOREIGN_MOVIE_TEXT = 'Удаление фильмов других пользователей запрещено';
+const INCOR_MOVIE_ID_TEXT = 'Передан некорректный id фильма';
+
+const NO_MOVIES_TEXT = 'Список сохраненных фильмов пуст';
+const DEL_MOVIE_TEXT = 'Фильм удален из списка сохраненных';
 
 module.exports = {
   REG_EXP,
@@ -19,4 +26,10 @@ module.exports = {
   FOREIGN_EMAIL_TEXT,
   NO_USER_EMAIL_TEXT,
   WRONG_DATA_TEXT,
+  NO_MOVIES_TEXT,
+  VALIDAT_ERR_TEXT,
+  NO_MOVIE_ID_TEXT,
+  FOREIGN_MOVIE_TEXT,
+  DEL_MOVIE_TEXT,
+  INCOR_MOVIE_ID_TEXT,
 };

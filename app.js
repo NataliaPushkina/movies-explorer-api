@@ -23,8 +23,10 @@ app.use(helmet());
 const {
   PORT = 3000,
   BASE_PATH,
-  MONGO_PATH = 'mongodb://localhost:27017/moviesdb',
+  MONGO_PATH,
+  NODE_ENV,
 } = process.env;
+const { MONGO_PATH_DEV } = require('./config');
 
 app.use(
   cors({
@@ -52,7 +54,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 async function main() {
   try {
     console.log('Вызвана функция main');
-    await mongoose.connect(MONGO_PATH, {
+    await mongoose.connect(NODE_ENV === 'production' ? MONGO_PATH : MONGO_PATH_DEV, {
       useNewUrlParser: true,
       useUnifiedTopology: false,
     });
