@@ -15,7 +15,7 @@ const INCOR_MOVIE_ID_TEXT = 'Передан некорректный id филь
 
 const NO_MOVIES_TEXT = 'Список сохраненных фильмов пуст';
 const DEL_MOVIE_TEXT = 'Фильм удален из списка сохраненных';
-
+const NOT_FOUND_PAGE_TEXT = 'Страница не найдена';
 module.exports = {
   REG_EXP,
   AUTH_ERR_TEXT,
@@ -32,4 +32,5 @@ module.exports = {
   FOREIGN_MOVIE_TEXT,
   DEL_MOVIE_TEXT,
   INCOR_MOVIE_ID_TEXT,
+  NOT_FOUND_PAGE_TEXT,
 };

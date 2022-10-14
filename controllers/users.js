@@ -67,10 +67,6 @@ const updateUserProfile = async (req, res, next) => {
   try {
     const userId = req.user._id;
     const { name, email } = req.body;
-    const userInfo = await User.findById(userId);
-    if (email !== userInfo.email) {
-      return next(new ConflictError(FOREIGN_EMAIL_TEXT));
-    }
     const user = await User.findByIdAndUpdate(
       userId,
       { name, email },
@@ -80,6 +76,9 @@ const updateUserProfile = async (req, res, next) => {
   } catch (err) {
     if (err.name === 'ValidationError') {
       return next(new BedReqError(WRONG_DATA_TEXT));
+    }
+    if (err.code === 11000) {
+      return next(new ConflictError(FOREIGN_EMAIL_TEXT));
     }
     return next(new ServerError(SERVER_ERR_TEXT));
   }

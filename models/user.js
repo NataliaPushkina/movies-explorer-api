@@ -23,6 +23,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     minlength: [2, 'Поле name должно содерджать больше 2 символов'],
     maxlength: [30, 'Поле name должно содерджать не больше 30 символов'],
+    required: [true, 'Поле name обязательное'],
   },
 }, { versionKey: false });
 

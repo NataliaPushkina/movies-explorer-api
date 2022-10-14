@@ -9,7 +9,7 @@ const { errors } = require('celebrate');
 const helmet = require('helmet');
 const { router } = require('./routes/index');
 const handleError = require('./errors/error');
-const NotFoundError = require('./errors/not-found-error');
+// const NotFoundError = require('./errors/not-found-error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const rateLimitMiddleware = require('./middlewares/rate-limiter');
 
@@ -40,9 +40,9 @@ app.use(rateLimitMiddleware);
 
 app.use('/', router);
 
-app.use((req, res, next) => {
-  next(new NotFoundError('Страница не найдена'));
-});
+// app.use((req, res, next) => {
+//   next(new NotFoundError('Страница не найдена'));
+// });
 
 app.use(errorLogger);
 

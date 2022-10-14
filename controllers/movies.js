@@ -19,7 +19,7 @@ const getMovies = async (req, res, next) => {
   try {
     const owner = req.user._id;
     const movies = await Movie.find({ owner });
-    if (movies !== []) {
+    if (!movies) {
       return next(new NotFoundError(NO_MOVIES_TEXT));
     }
     return res.send(movies);
@@ -79,7 +79,7 @@ const deleteMovie = async (req, res, next) => {
       return next(new ForbiddenError(FOREIGN_MOVIE_TEXT));
     }
     await movie.remove();
-    return res.send(DEL_MOVIE_TEXT);
+    return res.send({ message: DEL_MOVIE_TEXT });
   } catch (err) {
     if (err.kind === 'ObjectId') {
       return next(new BedReqError(INCOR_MOVIE_ID_TEXT));
