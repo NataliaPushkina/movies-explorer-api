@@ -9,7 +9,6 @@ const {
   SERVER_ERR_TEXT,
   NO_MOVIES_TEXT,
   VALIDAT_ERR_TEXT,
-  NO_MOVIE_ID_TEXT,
   FOREIGN_MOVIE_TEXT,
   DEL_MOVIE_TEXT,
   INCOR_MOVIE_ID_TEXT,
@@ -72,9 +71,6 @@ const deleteMovie = async (req, res, next) => {
   const { _id } = req.params;
   try {
     const movie = await Movie.findById(_id);
-    if (!movie) {
-      return next(new NotFoundError(NO_MOVIE_ID_TEXT));
-    }
     if (req.user._id !== movie.owner.toString()) {
       return next(new ForbiddenError(FOREIGN_MOVIE_TEXT));
     }
